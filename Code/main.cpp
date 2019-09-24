@@ -31,10 +31,17 @@ int main(int argc, char * argv[])
     // Object to store the file contents
     std::vector<std::string> Words;
     
+    // Add shapes to RectangleShape class
+    std::vector<sf::RectangleShape> shapes;
+    
     // Window variables
     int wWidth = 0, wHeight = 0;
     // Font variables
     int fontSize = 0, fontColorR = 0, fontColorG = 0, fontColorB = 0;
+    
+    // Shape properties
+    float shapeX, shapeY, shapeWidth, shapeHeight, shapeRadius, shapeVX, shapeVY;
+    int shapeColorRed, shapeColorGreen, shapeColorBlue;
     
     // Font file path
     std::string fontFilePath = "";
@@ -92,16 +99,27 @@ int main(int argc, char * argv[])
                 // Number of parameter
                 // int numParamsFont = 5;
                 
-                // stoi get values out of a string literal
                 fontFilePath = Words[j + 1];
-                fontSize = std::stoi(Words[j + 2]);
+                fontSize = std::stoi(Words[j + 2]);     // stoi get values out of a string literal
                 fontColorR = std::stoi(Words[j + 3]);
                 fontColorG = std::stoi(Words[j + 4]);
                 fontColorB = std::stoi(Words[j + 5]);
                             }
             else if (Words[j] == "Circle")
             {
+                shapeX = std::stoi(Words[j + 1]);
+                shapeY = std::stoi(Words[j + 2]);
+                shapeVX = std::stof(Words[j + 3]);
+                shapeVY = std::stof(Words[j + 4]);
+                shapeColorRed = std::stoi(Words[j + 5]);
+                shapeColorGreen = std::stoi(Words[j + 6]);
+                shapeColorBlue = std::stoi(Words[j + 7]);
+                shapeRadius = std::stoi(Words[j + 8]);
                 
+                auto circle = sf::RectangleShape(sf::Vector2f(shapeX, shapeY));
+                circle.setFillColor(sf::Color(shapeColorRed, shapeColorGreen, shapeColorBlue));
+                circle.setPosition(shapeX, shapeY);
+                shapes.push_back(circle);
             }
         
             else if (Words[j] == "Rectangle")
@@ -122,6 +140,17 @@ int main(int argc, char * argv[])
     // RenderWindow is the class we use to render the window
     sf::RenderWindow window(sf::VideoMode(wWidth, wHeight), "SFML works!");
     
+    // Basic rendering function calls
+    window.clear();            // Clear the window of previously drawn objects
+    
+    // Render the shapes
+    long shapeVectorSize = shapes.size();
+    
+    for (int k = 0; k < shapeVectorSize; k++)
+    {
+        window.draw(shapes[k]);
+    }
+    
     // Main loop
     while (window.isOpen())
     {
@@ -137,8 +166,7 @@ int main(int argc, char * argv[])
             }
         }
         
-        // Basic rendering function calls
-        window.clear();            // Clear the window of previously drawn objects
+        
         // window.draw(circle);    // Draw the object
         // window.draw(text);      // draw the text
         window.display();          // call the window display function
