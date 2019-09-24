@@ -86,13 +86,19 @@ int main(int argc, char * argv[])
                     wHeight = std::stoi(Words[i + 1]);
                 }
                 
-                
-                
             }
             else if (Words[j] == "Font")
             {
+                // Number of parameter
+                // int numParamsFont = 5;
                 
-            }
+                // stoi get values out of a string literal
+                fontFilePath = Words[j + 1];
+                fontSize = std::stoi(Words[j + 2]);
+                fontColorR = std::stoi(Words[j + 3]);
+                fontColorG = std::stoi(Words[j + 4]);
+                fontColorB = std::stoi(Words[j + 5]);
+                            }
             else if (Words[j] == "Circle")
             {
                 
