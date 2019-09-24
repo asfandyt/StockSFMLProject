@@ -59,37 +59,57 @@ int main(int argc, char * argv[])
     while (source >> word)
     {
         // Testing and Storing
-        std::cout << "Loop: " << loopCtrlWF << ", Line 62: " << word << std::endl;
+        // std::cout << "Loop: " << loopCtrlWF << ", Line 62: " << word << std::endl;
         Words.push_back(word);
         loopCtrlWF++;
         
     }
     
+    long vectorSize = Words.size();
     
-    for (std::string  item : Words) {
-        std::cout << "Testing for loop: " << item << std::endl;
+    try {
         
-        if (item == "Window")
-        {
+        for (int j = 0; j < vectorSize; j++) {
+            
+            // std::cout << "Testing for loop: " << Words[j] << std::endl;
+            
             // Initiate Window properties
-        }
-        else if (item == "Font")
-        {
-            
-        }
-        else if (item == "Circle")
-        {
-            
-        }
-    
-        else if (item == "Rectangle")
-        {
-            
-        }
+            if (Words[j] == "Window")
+            {
+                // Number of parameter
+                int numParamsWin = 2;
+                
+                for (int i = j + 1; i < numParamsWin; i++) {
+                    
+                    // stoi get values out of a string literal
+                    wWidth = std::stoi(Words[i]);
+                    wHeight = std::stoi(Words[i + 1]);
+                }
+                
+                
+                
+            }
+            else if (Words[j] == "Font")
+            {
+                
+            }
+            else if (Words[j] == "Circle")
+            {
+                
+            }
         
-        
+            else if (Words[j] == "Rectangle")
+            {
+                
+            }
+            
+            
+        }
     }
-    
+    catch(std::exception e)
+    {
+        std::cout << e.what() << std::endl;
+    }
     
     // Variables needed for the Window and Font is complete
     
