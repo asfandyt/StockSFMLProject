@@ -36,6 +36,11 @@ int main(int argc, char * argv[])
     // Font variables
     int fontSize = 0, fontColorR = 0, fontColorG = 0, fontColorB = 0;
     
+    // The window object we will be manipulating
+    // sf:: is the namespace of SFML
+    // RenderWindow is the class we use to render the window
+    sf::RenderWindow window(sf::VideoMode(wWidth, wHeight), "SFML works!");
+    
     // Font file path
     std::string fontFilePath = "";
     
