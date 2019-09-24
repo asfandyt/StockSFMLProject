@@ -55,109 +55,17 @@ int main(int argc, char * argv[])
     // Loop control variable for Window and Font
     int loopCtrlWF = 0;
     
-    // Loop as long there is a word in file
+    // Add all words on file into vector
     while (source >> word)
     {
         // Testing and Storing
-        std::cout << "Loop: " << loopCtrlWF << ", Line 54: " << word << std::endl;
+        std::cout << "Loop: " << loopCtrlWF << ", Line 62: " << word << std::endl;
         Words.push_back(word);
-        
-        // Initiating RenderWindow and Font
-        // TOSUGGEST: Check to see if the word is 'Window'
-        /* TOSUGGEST: If the file structure changes the code will break.
-                      Create if conditions and loop through the contents of the file instead
-         */
-        if (loopCtrlWF == 1)
-        {
-            std::stringstream ss;
-            
-            // Insert value to convert to int
-            // Space is used to sperate the width and height for later retraction
-            ss << word << ' ';
-            
-            // Move to next word
-            source >> word;
-            Words.push_back(word);
-            
-            loopCtrlWF++;
-            
-            // Testing
-            std::cout << "Loop: " << loopCtrlWF << ", Line 70: " << word << std::endl;
-            
-            // Insert second word
-            ss << word;
-            
-            // Output formatted string vars with ints
-            ss >> wWidth >> wHeight;
-            
-            // Once done with the first line, move to next line
-            continue;
-        }
-        
-        // Initiating Font variables
-        if (loopCtrlWF == 2)
-        {
-            std::stringstream ss;
-            
-            fontFilePath = word;
-            
-            source >> word;
-            Words.push_back(word);
-            
-            std::cout << "Loop: " << loopCtrlWF << ", Line 91: " << word << std::endl;
-            
-            loopCtrlWF++;
-            
-            ss << word << ' ';
-            
-            source >> word;
-            Words.push_back(word);
-            
-            std::cout << "Loop: " << loopCtrlWF << ", Line 99: " << word << std::endl;
-            
-            loopCtrlWF++;
-            
-            ss << word << ' ';
-            
-            source >> word;
-            Words.push_back(word);
-            
-            std::cout << "Loop: " << loopCtrlWF << ", Line 107: " << word << std::endl;
-            
-            loopCtrlWF++;
-            
-            ss << word << ' ';
-            
-            source >> word;
-            Words.push_back(word);
-            
-            std::cout << "Loop: " << loopCtrlWF << ", Line 115: " << word << std::endl;
-            
-            loopCtrlWF++;
-            
-            ss << word << ' ';
-            
-            source >> word;
-            Words.push_back(word);
-            
-            std::cout << "Loop: " << loopCtrlWF << ", Line 115: " << word << std::endl;
-            
-            loopCtrlWF++;
-            
-            ss << word << ' ';
-            ss >> fontFilePath >> fontSize >> fontColorR >> fontColorG >> fontColorB;
-            
-            //break;
-            
-        }
-        
-        // Go to next word
         loopCtrlWF++;
         
     }
     
-    // TODO: Figure out how to loop through array and store the different shape property values and create the shapes in RenderWindow
-    int loopCtrlShapes = 0;
+    
     for (std::string  item : Words) {
         std::cout << "Testing for loop: " << item << std::endl;
         
@@ -179,7 +87,6 @@ int main(int argc, char * argv[])
             
         }
         
-        loopCtrlShapes++;
         
     }
     
@@ -193,20 +100,7 @@ int main(int argc, char * argv[])
     std::cout << "Font Color Red: " << fontColorR << std::endl;
     std::cout << "Font Color Green: " << fontColorG << std::endl;
     std::cout << "Font Color Blue: " << fontColorB << std::endl;
-    /*
-    while (word == "Window")
-    {
-        std::cout << "Window" << std::endl;
-        
-        for (int i = 0; i < 2; i++) {
-            source >> word;
-            
-            std::cout << word << std::endl;
-        }
-        
-        
-    }
-    */
+    
     
     
     // ------------------------------------------------------------------------
