@@ -36,11 +36,6 @@ int main(int argc, char * argv[])
     // Font variables
     int fontSize = 0, fontColorR = 0, fontColorG = 0, fontColorB = 0;
     
-    // The window object we will be manipulating
-    // sf:: is the namespace of SFML
-    // RenderWindow is the class we use to render the window
-    sf::RenderWindow window(sf::VideoMode(wWidth, wHeight), "SFML works!");
-    
     // Font file path
     std::string fontFilePath = "";
     
@@ -114,6 +109,33 @@ int main(int argc, char * argv[])
     catch(std::exception e)
     {
         std::cout << e.what() << std::endl;
+    }
+    
+    // The window object we will be manipulating
+    // sf:: is the namespace of SFML
+    // RenderWindow is the class we use to render the window
+    sf::RenderWindow window(sf::VideoMode(wWidth, wHeight), "SFML works!");
+    
+    // Main loop
+    while (window.isOpen())
+    {
+        // Event handling
+        sf::Event event;
+        
+        while (window.pollEvent(event))
+        {
+            // Handle window closure
+            if (event.type == sf::Event::Closed)
+            {
+                window.close();
+            }
+        }
+        
+        // Basic rendering function calls
+        window.clear();            // Clear the window of previously drawn objects
+        // window.draw(circle);    // Draw the object
+        // window.draw(text);      // draw the text
+        window.display();          // call the window display function
     }
     
     // Variables needed for the Window and Font is complete
