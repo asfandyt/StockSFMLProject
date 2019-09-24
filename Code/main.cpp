@@ -17,15 +17,208 @@ int main(int argc, const char * argv[]) {
  
 
 #include <SFML/Graphics.hpp> // TODO: include <sfml-graphics.hpp>
-
 #include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <sstream>
 
 int main(int argc, char * argv[])
 {
+    // Creating ifstream object
+    std::ifstream source;
+    
+    // Object to store the file contents
+    std::vector<std::string> Words;
+    
+    // Window variables
+    int wWidth = 0, wHeight = 0;
+    // Font variables
+    int fontSize = 0, fontColorR = 0, fontColorG = 0, fontColorB = 0;
+    
+    // Font file path
+    std::string fontFilePath = "";
+    
+    // Configuration file
+    source.open("config.txt");
+    
+    // Error handling
+    if (!source)
+    {
+        std::cout << "File not found!" << std::endl;
+        exit(-1);
+    }
+    
+    // Variable to catch words
+    std::string word;
+    
+    // Loop control variable for Window and Font
+    int loopCtrlWF = 0;
+    
+    // Loop as long there is a word in file
+    while (source >> word)
+    {
+        // Testing and Storing
+        std::cout << "Loop: " << loopCtrlWF << ", Line 54: " << word << std::endl;
+        Words.push_back(word);
+        
+        // Initiating RenderWindow and Font
+        // TOSUGGEST: Check to see if the word is 'Window'
+        /* TOSUGGEST: If the file structure changes the code will break.
+                      Create if conditions and loop through the contents of the file instead
+         */
+        if (loopCtrlWF == 1)
+        {
+            std::stringstream ss;
+            
+            // Insert value to convert to int
+            // Space is used to sperate the width and height for later retraction
+            ss << word << ' ';
+            
+            // Move to next word
+            source >> word;
+            Words.push_back(word);
+            
+            loopCtrlWF++;
+            
+            // Testing
+            std::cout << "Loop: " << loopCtrlWF << ", Line 70: " << word << std::endl;
+            
+            // Insert second word
+            ss << word;
+            
+            // Output formatted string vars with ints
+            ss >> wWidth >> wHeight;
+            
+            // Once done with the first line, move to next line
+            continue;
+        }
+        
+        // Initiating Font variables
+        if (loopCtrlWF == 2)
+        {
+            std::stringstream ss;
+            
+            fontFilePath = word;
+            
+            source >> word;
+            Words.push_back(word);
+            
+            std::cout << "Loop: " << loopCtrlWF << ", Line 91: " << word << std::endl;
+            
+            loopCtrlWF++;
+            
+            ss << word << ' ';
+            
+            source >> word;
+            Words.push_back(word);
+            
+            std::cout << "Loop: " << loopCtrlWF << ", Line 99: " << word << std::endl;
+            
+            loopCtrlWF++;
+            
+            ss << word << ' ';
+            
+            source >> word;
+            Words.push_back(word);
+            
+            std::cout << "Loop: " << loopCtrlWF << ", Line 107: " << word << std::endl;
+            
+            loopCtrlWF++;
+            
+            ss << word << ' ';
+            
+            source >> word;
+            Words.push_back(word);
+            
+            std::cout << "Loop: " << loopCtrlWF << ", Line 115: " << word << std::endl;
+            
+            loopCtrlWF++;
+            
+            ss << word << ' ';
+            
+            source >> word;
+            Words.push_back(word);
+            
+            std::cout << "Loop: " << loopCtrlWF << ", Line 115: " << word << std::endl;
+            
+            loopCtrlWF++;
+            
+            ss << word << ' ';
+            ss >> fontFilePath >> fontSize >> fontColorR >> fontColorG >> fontColorB;
+            
+            //break;
+            
+        }
+        
+        // Go to next word
+        loopCtrlWF++;
+        
+    }
+    
+    // TODO: Figure out how to loop through array and store the different shape property values and create the shapes in RenderWindow
+    int loopCtrlShapes = 0;
+    for (std::string  item : Words) {
+        std::cout << "Testing for loop: " << item << std::endl;
+        
+        if (item == "Window")
+        {
+            // Initiate Window properties
+        }
+        else if (item == "Font")
+        {
+            
+        }
+        else if (item == "Circle")
+        {
+            
+        }
+    
+        else if (item == "Rectangle")
+        {
+            
+        }
+        
+        loopCtrlShapes++;
+        
+    }
+    
+    
+    // Variables needed for the Window and Font is complete
+    
+    std::cout << "Window Width: " << wWidth << std::endl;
+    std::cout << "Window Height: " << wHeight << std::endl;
+    std::cout << "Font File: " << fontFilePath << std::endl;
+    std::cout << "Font Size: " << fontSize << std::endl;
+    std::cout << "Font Color Red: " << fontColorR << std::endl;
+    std::cout << "Font Color Green: " << fontColorG << std::endl;
+    std::cout << "Font Color Blue: " << fontColorB << std::endl;
+    /*
+    while (word == "Window")
+    {
+        std::cout << "Window" << std::endl;
+        
+        for (int i = 0; i < 2; i++) {
+            source >> word;
+            
+            std::cout << word << std::endl;
+        }
+        
+        
+    }
+    */
+    
+    
+    // ------------------------------------------------------------------------
+    /*
     // create a new window of size 400 by 400 pixels
     // top-left of the window is (0,0) and bottom-right is (w,h)
     const int wWidth = 640;
     const int wHeight = 480;
+    
+    // The window object we will be manipulating
+    // sf:: is the namespace of SFML
+    // RenderWindow is the class we use to render the window
     sf::RenderWindow window(sf::VideoMode(wWidth, wHeight), "SFML works!");
     
     // let's make a shape that we will draw to the screen
@@ -90,6 +283,7 @@ int main(int argc, char * argv[])
         window.draw(text);      // draw the text
         window.display();       // call the window display function
     }
+    */
     
     return 0;
 }
