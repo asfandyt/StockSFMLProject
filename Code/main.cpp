@@ -42,6 +42,7 @@ int main(int argc, char * argv[])
     // Shape properties
     float shapeX, shapeY, shapeWidth, shapeHeight, shapeRadius, shapeVX, shapeVY;
     int shapeColorRed, shapeColorGreen, shapeColorBlue;
+    std::string shapeName;
     
     // Font file path
     std::string fontFilePath = "";
@@ -107,14 +108,15 @@ int main(int argc, char * argv[])
                             }
             else if (Words[j] == "Circle")
             {
-                shapeX = std::stoi(Words[j + 1]);
-                shapeY = std::stoi(Words[j + 2]);
-                shapeVX = std::stof(Words[j + 3]);
-                shapeVY = std::stof(Words[j + 4]);
-                shapeColorRed = std::stoi(Words[j + 5]);
-                shapeColorGreen = std::stoi(Words[j + 6]);
-                shapeColorBlue = std::stoi(Words[j + 7]);
-                shapeRadius = std::stoi(Words[j + 8]);
+                shapeName = Words[j + 1];
+                shapeX = std::stoi(Words[j + 2]);
+                shapeY = std::stoi(Words[j + 3]);
+                shapeVX = std::stof(Words[j + 4]);
+                shapeVY = std::stof(Words[j + 5]);
+                shapeColorRed = std::stoi(Words[j + 6]);
+                shapeColorGreen = std::stoi(Words[j + 7]);
+                shapeColorBlue = std::stoi(Words[j + 8]);
+                shapeRadius = std::stoi(Words[j + 9]);
                 
                 auto circle = sf::RectangleShape(sf::Vector2f(shapeX, shapeY));
                 circle.setFillColor(sf::Color(shapeColorRed, shapeColorGreen, shapeColorBlue));
@@ -130,9 +132,9 @@ int main(int argc, char * argv[])
             
         }
     }
-    catch(std::exception e)
+    catch(const char* msg)
     {
-        std::cout << e.what() << std::endl;
+        std::cout << msg << std::endl;
     }
     
     // The window object we will be manipulating
@@ -146,10 +148,12 @@ int main(int argc, char * argv[])
     // Render the shapes
     long shapeVectorSize = shapes.size();
     
+    /*
     for (int k = 0; k < shapeVectorSize; k++)
     {
         window.draw(shapes[k]);
     }
+     */
     
     // Main loop
     while (window.isOpen())
@@ -166,7 +170,12 @@ int main(int argc, char * argv[])
             }
         }
         
+        window.clear();
         
+        for (int k = 0; k < shapeVectorSize; k++)
+        {
+            window.draw(shapes[k]);
+        }
         // window.draw(circle);    // Draw the object
         // window.draw(text);      // draw the text
         window.display();          // call the window display function
