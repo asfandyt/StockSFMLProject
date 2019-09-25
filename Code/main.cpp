@@ -32,7 +32,9 @@ int main(int argc, char * argv[])
     std::vector<std::string> Words;
     
     // Add shapes to RectangleShape class
-    std::vector<sf::CircleShape> shapes;
+    std::vector<sf::RectangleShape> rectangles;
+    std::vector<sf::CircleShape> circles;
+    
     
     // Window variables
     int wWidth = 0, wHeight = 0;
@@ -121,13 +123,26 @@ int main(int argc, char * argv[])
                 auto circle = sf::CircleShape(shapeRadius);
                 circle.setFillColor(sf::Color(shapeColorRed, shapeColorGreen, shapeColorBlue));
                 circle.setPosition(shapeX, shapeY);
-                shapes.push_back(circle);
+                circles.push_back(circle);
             }
         
             else if (Words[j] == "Rectangle")
             {
+                shapeName = Words[j + 1];
+                shapeX = std::stoi(Words[j + 2]);
+                shapeY = std::stoi(Words[j + 3]);
+                shapeVX = std::stof(Words[j + 4]);
+                shapeVY = std::stof(Words[j + 5]);
+                shapeColorRed = std::stoi(Words[j + 6]);
+                shapeColorGreen = std::stoi(Words[j + 7]);
+                shapeColorBlue = std::stoi(Words[j + 8]);
+                shapeWidth = std::stoi(Words[j + 9]);
+                shapeHeight = std::stoi(Words[j + 10]);
                 
-            }
+                auto rectangle = sf::RectangleShape(sf::Vector2f(shapeWidth, shapeHeight));
+                rectangle.setFillColor(sf::Color(shapeColorRed, shapeColorGreen, shapeColorBlue));
+                rectangle.setPosition(shapeX, shapeY);
+                rectangles.push_back(rectangle);            }
             
             
         }
@@ -146,7 +161,8 @@ int main(int argc, char * argv[])
     // window.clear();            // Clear the window of previously drawn objects
     
     // Render the shapes
-    long shapeVectorSize = shapes.size();
+    long numOfCircles = circles.size();
+    long numOfRectangles = rectangles.size();
     
     /*
     for (int k = 0; k < shapeVectorSize; k++)
@@ -168,14 +184,43 @@ int main(int argc, char * argv[])
             {
                 window.close();
             }
-        }
+            
+            // this event is triggered when a key is pressed
+            if (event.type == sf::Event::KeyPressed)
+            {
+                // print the key that was pressed to the console
+                std::cout << "Key pressed with code = " << event.key.code << "\n";
+                
+                // example, what happens when x is pressed
+                if (event.key.code == sf::Keyboard::X)
+                {
+                    // reverse the direction of the circle on the screen
+                    shapeVX *= -1.0f;
+                    shapeVY *= -1.0f;                }
+            }        }
+        
+        
         
         window.clear();
         
-        for (int k = 0; k < shapeVectorSize; k++)
+        for (int k = 0; k < numOfCircles; k++)
         {
-            window.draw(shapes[k]);
+            // Animate object
+            circles[k].setPosition(circles[k].getPosition().x - shapeVX, circles[k].getPosition().y - shapeVY);
+            //circles[k].
+            
+            window.draw(circles[k]);
         }
+        
+        for (int l = 0; l < numOfRectangles; l++)
+        {
+            // Animate object
+            rectangles[l].setPosition(circles[l].getPosition().x - shapeVX, rectangles[l].getPosition().y - shapeVY);
+            
+            
+            window.draw(rectangles[l]);
+        }
+        
         // window.draw(circle);    // Draw the object
         // window.draw(text);      // draw the text
         window.display();          // call the window display function
