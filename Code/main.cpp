@@ -32,7 +32,7 @@ int main(int argc, char * argv[])
     std::vector<std::string> Words;
     
     // Add shapes to RectangleShape class
-    std::vector<sf::RectangleShape> shapes;
+    std::vector<sf::CircleShape> shapes;
     
     // Window variables
     int wWidth = 0, wHeight = 0;
@@ -118,7 +118,7 @@ int main(int argc, char * argv[])
                 shapeColorBlue = std::stoi(Words[j + 8]);
                 shapeRadius = std::stoi(Words[j + 9]);
                 
-                auto circle = sf::RectangleShape(sf::Vector2f(shapeX, shapeY));
+                auto circle = sf::CircleShape(shapeRadius);
                 circle.setFillColor(sf::Color(shapeColorRed, shapeColorGreen, shapeColorBlue));
                 circle.setPosition(shapeX, shapeY);
                 shapes.push_back(circle);
@@ -143,7 +143,7 @@ int main(int argc, char * argv[])
     sf::RenderWindow window(sf::VideoMode(wWidth, wHeight), "SFML works!");
     
     // Basic rendering function calls
-    window.clear();            // Clear the window of previously drawn objects
+    // window.clear();            // Clear the window of previously drawn objects
     
     // Render the shapes
     long shapeVectorSize = shapes.size();
