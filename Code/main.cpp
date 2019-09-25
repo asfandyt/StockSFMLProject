@@ -22,6 +22,7 @@ int main(int argc, const char * argv[]) {
 #include <string>
 #include <vector>
 #include <sstream>
+#include <math.h>
 
 int main(int argc, char * argv[])
 {
@@ -205,6 +206,17 @@ int main(int argc, char * argv[])
         
         for (int k = 0; k < numOfCircles; k++)
         {
+            float currentLocationX = circles[k].getLocalBounds().left + 2 * (circles[k].getRadius());
+            if (fabs(currentLocationX) >= wWidth || fabs(currentLocationX) <= 0.0f)
+            {
+                // reverse the direction of the circle on the screen
+                shapeVX *= -1.0f;
+            }
+            if (circles[k].getLocalBounds().top == wHeight || circles[k].getLocalBounds().top == 0)
+            {
+                // reverse the direction of the circle on the screen
+                shapeVY *= -1.0f;
+            }
             // Animate object
             circles[k].setPosition(circles[k].getPosition().x - shapeVX, circles[k].getPosition().y - shapeVY);
             //circles[k].
