@@ -26,14 +26,17 @@ int main(int argc, const char * argv[]) {
 
 int main(int argc, char * argv[])
 {
-    // Creating ifstream object
+    // Creating ifstream object, to read from file
     std::ifstream source;
     
     // Object to store the file contents
+    // Storing words as string type in a vector data structure
     std::vector<std::string> Words;
     
     // Add shapes to RectangleShape class
+    // RectangleShape class is a subclass of Shape class in SFML
     std::vector<sf::RectangleShape> rectangles;
+    // CircleShape subclass of Shape class
     std::vector<sf::CircleShape> circles;
     
     
@@ -43,11 +46,11 @@ int main(int argc, char * argv[])
     int fontSize = 0, fontColorR = 0, fontColorG = 0, fontColorB = 0;
     
     // Shape properties
-    float shapeX, shapeY, shapeWidth, shapeHeight, shapeRadius, shapeVX, shapeVY;
+    float shapeX, shapeY, shapeWidth, shapeHeight, shapeRadius, shapeVX = 0.0f, shapeVY = 0.0f;
     int shapeColorRed, shapeColorGreen, shapeColorBlue;
     std::string shapeName;
     
-    // Font file path
+    // TODO: Font file path
     std::string fontFilePath = "";
     
     // Configuration file
@@ -67,6 +70,7 @@ int main(int argc, char * argv[])
     int loopCtrlWF = 0;
     
     // Add all words on file into vector
+    // Irrelevant to requirements, for understanding only
     while (source >> word)
     {
         // Testing and Storing
@@ -76,6 +80,7 @@ int main(int argc, char * argv[])
         
     }
     
+    // Getting the total words
     long vectorSize = Words.size();
     
     try {
@@ -129,6 +134,7 @@ int main(int argc, char * argv[])
         
             else if (Words[j] == "Rectangle")
             {
+                // Created Rectangle successfully
                 shapeName = Words[j + 1];
                 shapeX = std::stoi(Words[j + 2]);
                 shapeY = std::stoi(Words[j + 3]);
@@ -153,24 +159,16 @@ int main(int argc, char * argv[])
         std::cout << msg << std::endl;
     }
     
+    // NOTE: The above code works
+    
     // The window object we will be manipulating
     // sf:: is the namespace of SFML
     // RenderWindow is the class we use to render the window
     sf::RenderWindow window(sf::VideoMode(wWidth, wHeight), "SFML works!");
     
-    // Basic rendering function calls
-    // window.clear();            // Clear the window of previously drawn objects
-    
     // Render the shapes
     long numOfCircles = circles.size();
     long numOfRectangles = rectangles.size();
-    
-    /*
-    for (int k = 0; k < shapeVectorSize; k++)
-    {
-        window.draw(shapes[k]);
-    }
-     */
     
     // Main loop
     while (window.isOpen())
@@ -197,29 +195,68 @@ int main(int argc, char * argv[])
                 {
                     // reverse the direction of the circle on the screen
                     shapeVX *= -1.0f;
-                    shapeVY *= -1.0f;                }
-            }        }
-        
-        
+                    shapeVY *= -1.0f;
+                    
+                }
+            }
+            
+        }
         
         window.clear();
         
         for (int k = 0; k < numOfCircles; k++)
         {
-            float currentLocationX = circles[k].getLocalBounds().left + 2 * (circles[k].getRadius());
-            if (fabs(currentLocationX) >= wWidth || fabs(currentLocationX) <= 0.0f)
+            /*
+                TODO:: Find the left-top point of object: bounding box
+                Add the left point to the width of the object.
+                There are two places the object to wall intersection is possible
+                the left side or the right side. So, track two locations.
+                Calculate the left bound point: circles[k].getLocalBounds
+            */
+            float xLeftBB, yTopBB;
+            float currentLocationX, currentLocationY;
+            
+            xLeftBB = circles[k].getGlobalBounds().left;
+            yTopBB = circles[k].getGlobalBounds().top;
+            
+            // For negative speed we will be checking intersection
+            // of the top and left walls
+            if(shapeVX > 0.0f)
             {
-                // reverse the direction of the circle on the screen
-                shapeVX *= -1.0f;
+                // when moving left, compare left wall
+                currentLocationX = xLeftBB;
+                
+                if(currentLocationX <= 0.0f)
+                    shapeVX *= -1.0f;
             }
-            if (circles[k].getLocalBounds().top == wHeight || circles[k].getLocalBounds().top == 0)
+            else
             {
-                // reverse the direction of the circle on the screen
-                shapeVY *= -1.0f;
+                // when moving right, compare right wall
+                currentLocationX = xLeftBB + 2 * (circles[k].getRadius());
+                
+                if(currentLocationX >= wWidth)
+                    shapeVX *= -1.0f;
             }
+            
+            if(shapeVY > 0.0f)
+            {
+                // when moving up, compare upper wall
+                currentLocationY = yTopBB;
+                
+                if(currentLocationY <= 0.0f)
+                    shapeVY *= -1.0f;
+            }
+            else
+            {
+                // when moving down, compare lower wall
+                currentLocationY = yTopBB + 2 * (circles[k].getRadius());
+                
+                if(currentLocationY >= wHeight)
+                    shapeVY *= -1.0f;
+            }
+            
             // Animate object
             circles[k].setPosition(circles[k].getPosition().x - shapeVX, circles[k].getPosition().y - shapeVY);
-            //circles[k].
             
             window.draw(circles[k]);
         }
