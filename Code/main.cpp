@@ -33,11 +33,21 @@ int main(int argc, char * argv[])
     // Storing words as string type in a vector data structure
     std::vector<std::string> Words;
     
+    
+    // TODO: Store different child shapes under base shape
     // Add shapes to RectangleShape class
     // RectangleShape class is a subclass of Shape class in SFML
     std::vector<sf::RectangleShape> rectangles;
     // CircleShape subclass of Shape class
     std::vector<sf::CircleShape> circles;
+    
+    // Created vector containing shared_ptr to contain references to shapes
+    // We will use '->' to add/change members
+    std::vector<std::shared_ptr<sf::Shape>> shapes;
+    
+    
+    // TODO:
+    std::vector<sf::Vector2f> velocity;
     
     
     // Window variables
@@ -126,10 +136,21 @@ int main(int argc, char * argv[])
                 shapeColorBlue = std::stoi(Words[j + 8]);
                 shapeRadius = std::stoi(Words[j + 9]);
                 
+                /*
                 auto circle = sf::CircleShape(shapeRadius);
                 circle.setFillColor(sf::Color(shapeColorRed, shapeColorGreen, shapeColorBlue));
                 circle.setPosition(shapeX, shapeY);
                 circles.push_back(circle);
+                 */
+                
+                // Update shape via references
+                auto shape = std::make_shared<sf::CircleShape>(sf::CircleShape(shapeRadius));
+                
+                shape -> setFillColor(sf::Color(shapeColorRed, shapeColorGreen, shapeColorBlue));
+                shape -> setPosition(shapeX, shapeY);
+                shapes.push_back(shape);
+                
+                velocity.push_back(sf::Vector2f(shapeVX, shapeVY));
             }
         
             else if (Words[j] == "Rectangle")
@@ -146,11 +167,20 @@ int main(int argc, char * argv[])
                 shapeWidth = std::stoi(Words[j + 9]);
                 shapeHeight = std::stoi(Words[j + 10]);
                 
+                /*
                 auto rectangle = sf::RectangleShape(sf::Vector2f(shapeWidth, shapeHeight));
                 rectangle.setFillColor(sf::Color(shapeColorRed, shapeColorGreen, shapeColorBlue));
                 rectangle.setPosition(shapeX, shapeY);
                 rectangles.push_back(rectangle);            }
-            
+                 */
+                auto shape = std::make_shared<sf::RectangleShape>(sf::RectangleShape(sf::Vector2f(shapeX, shapeY)));
+                
+                shape -> setFillColor(sf::Color(shapeColorRed, shapeColorGreen, shapeColorBlue));
+                shape -> setPosition(shapeX, shapeY);
+                shapes.push_back(shape);
+                
+                velocity.push_back(sf::Vector2f(shapeVX, shapeVY));
+            }
             
         }
     }
@@ -204,7 +234,18 @@ int main(int argc, char * argv[])
         
         window.clear();
         
-        for (int k = 0; k < numOfCircles; k++)
+        // New loop to render the objects
+        for (std::size_t i = 0; i < shapes.size(); i++) {
+            
+            // Move the objects
+            shapes[i] -> setPosition(shapes[i] -> getPosition().x - velocity[i].x, shapes[i] -> getPosition().y - velocity[i].y);
+            
+            // draw object onto window object
+            window.draw(*shapes[i]);
+            
+        }
+        
+        for (std::size_t k = 0; k < numOfCircles; k++)
         {
             /*
                 TODO:: Find the left-top point of object: bounding box
