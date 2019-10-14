@@ -136,13 +136,6 @@ int main(int argc, char * argv[])
                 shapeColorBlue = std::stoi(Words[j + 8]);
                 shapeRadius = std::stoi(Words[j + 9]);
                 
-                /*
-                auto circle = sf::CircleShape(shapeRadius);
-                circle.setFillColor(sf::Color(shapeColorRed, shapeColorGreen, shapeColorBlue));
-                circle.setPosition(shapeX, shapeY);
-                circles.push_back(circle);
-                 */
-                
                 // Update shape via references
                 auto shape = std::make_shared<sf::CircleShape>(sf::CircleShape(shapeRadius));
                 
@@ -167,12 +160,6 @@ int main(int argc, char * argv[])
                 shapeWidth = std::stoi(Words[j + 9]);
                 shapeHeight = std::stoi(Words[j + 10]);
                 
-                /*
-                auto rectangle = sf::RectangleShape(sf::Vector2f(shapeWidth, shapeHeight));
-                rectangle.setFillColor(sf::Color(shapeColorRed, shapeColorGreen, shapeColorBlue));
-                rectangle.setPosition(shapeX, shapeY);
-                rectangles.push_back(rectangle);            }
-                 */
                 auto shape = std::make_shared<sf::RectangleShape>(sf::RectangleShape(sf::Vector2f(shapeX, shapeY)));
                 
                 shape -> setFillColor(sf::Color(shapeColorRed, shapeColorGreen, shapeColorBlue));
@@ -224,8 +211,10 @@ int main(int argc, char * argv[])
                 if (event.key.code == sf::Keyboard::X)
                 {
                     // reverse the direction of the circle on the screen
-                    shapeVX *= -1.0f;
-                    shapeVY *= -1.0f;
+                    for (std::size_t i = 0; i < velocity.size(); i++)
+                    {
+                        velocity[i] *= -1.0f;
+                    }
                     
                 }
             }
@@ -237,6 +226,83 @@ int main(int argc, char * argv[])
         // New loop to render the objects
         for (std::size_t i = 0; i < shapes.size(); i++) {
             
+            float xLeftBB, yTopBB, shapeWidth, shapeHeight, radius;
+            float currentLocationX, currentLocationY;
+            
+            xLeftBB = shapes[i] -> getGlobalBounds().left;
+            yTopBB = shapes[i] -> getGlobalBounds().top;
+            
+            std::string circleShape = "CircleShape";
+            std::string shapeName = typeid(*shapes[i]).name();
+            
+            // In case circle, the width is 2X the radius
+            if (shapeName.find(circleShape) != std::string::npos)
+            {
+                sf::CircleShape* c = dynamic_cast<sf::CircleShape*>(shapes[i].get());
+                radius = c -> getRadius();
+                
+            }
+            else
+            {
+                sf::RectangleShape* r = dynamic_cast<sf::RectangleShape*>(shapes[i].get());
+                // when moving right, compare right wall
+                shapeWidth = r -> getPoint(0).x;
+                shapeHeight = r -> getPoint(0).y;
+                
+            }
+            
+            if(velocity[i].x > 0.0f)
+            {
+                // when moving left, compare left wall
+                currentLocationX = xLeftBB;
+                
+                if(currentLocationX <= 0.0f)
+                    velocity[i].x *= -1.0f;
+            }
+            else
+            {
+                // In case circle, the width is 2X the radius
+                if (shapeName.find(circleShape) != std::string::npos)
+                {
+                    currentLocationX = xLeftBB + 2 * radius;
+                    
+                }
+                else
+                {
+                    currentLocationX = xLeftBB + shapeWidth;
+                    
+                }
+                
+                
+                if(currentLocationX >= wWidth)
+                    velocity[i].x *= -1.0f;
+            }
+            
+            if(velocity[i].y > 0.0f)
+            {
+                // when moving up, compare upper wall
+                currentLocationY = yTopBB;
+                
+                if(currentLocationY <= 0.0f)
+                    velocity[i].y *= -1.0f;
+            }
+            else
+            {
+                // In case circle, the width is 2X the radius
+                if (shapeName.find(circleShape) != std::string::npos)
+                {
+                    currentLocationY = yTopBB + 2 * radius;
+                    
+                }
+                else
+                {
+                    currentLocationY = yTopBB + shapeHeight;
+                    
+                }
+                
+                if(currentLocationY >= wHeight)
+                    velocity[i].y *= -1.0f;
+            }
             // Move the objects
             shapes[i] -> setPosition(shapes[i] -> getPosition().x - velocity[i].x, shapes[i] -> getPosition().y - velocity[i].y);
             
@@ -245,15 +311,11 @@ int main(int argc, char * argv[])
             
         }
         
+        /*
         for (std::size_t k = 0; k < numOfCircles; k++)
         {
-            /*
-                TODO:: Find the left-top point of object: bounding box
-                Add the left point to the width of the object.
-                There are two places the object to wall intersection is possible
-                the left side or the right side. So, track two locations.
-                Calculate the left bound point: circles[k].getLocalBounds
-            */
+            // TODO:: Find the left-top point of object: bounding box
+                
             float xLeftBB, yTopBB;
             float currentLocationX, currentLocationY;
             
@@ -301,19 +363,9 @@ int main(int argc, char * argv[])
             
             window.draw(circles[k]);
         }
-        
-        for (int l = 0; l < numOfRectangles; l++)
-        {
-            // Animate object
-            rectangles[l].setPosition(circles[l].getPosition().x - shapeVX, rectangles[l].getPosition().y - shapeVY);
-            
-            
-            window.draw(rectangles[l]);
-        }
-        
-        // window.draw(circle);    // Draw the object
-        // window.draw(text);      // draw the text
-        window.display();          // call the window display function
+        */
+        // call the window display function
+        window.display();
     }
     
     // Variables needed for the Window and Font is complete
@@ -327,82 +379,6 @@ int main(int argc, char * argv[])
     std::cout << "Font Color Blue: " << fontColorB << std::endl;
     
     
-    
-    // ------------------------------------------------------------------------
-    /*
-    // create a new window of size 400 by 400 pixels
-    // top-left of the window is (0,0) and bottom-right is (w,h)
-    const int wWidth = 640;
-    const int wHeight = 480;
-    
-    // The window object we will be manipulating
-    // sf:: is the namespace of SFML
-    // RenderWindow is the class we use to render the window
-    sf::RenderWindow window(sf::VideoMode(wWidth, wHeight), "SFML works!");
-    
-    // let's make a shape that we will draw to the screen
-    sf::CircleShape circle(50);             // create a circle shape with radius 50
-    circle.setFillColor(sf::Color::Green);  // set the circle color to green
-    circle.setPosition(300.0f, 300.0f);     // set the top-left position of the circle
-    float circleMoveSpeed = 0.01f;          // we will use this to move the circle later
-    
-    // let's load a font so we can display some text
-    sf::Font arial;
-    
-    // attempt to load the font from a file
-    // TODO: Change to "fonts/arial.ttf"
-    if (!arial.loadFromFile("/Users/asfand/Google Drive/MUN/Fall 2019/4300/CodeEnvironment/Platforms/Mac/COMP4300_A1/fonts/arial.ttf"))
-    {
-        // if we can't load the font, print an error to the error console and exit
-        std::cerr << "Could not load font!\n";
-        exit(-1);
-    }
-    
-    // set up the text object that will be drawn to the screen
-    sf::Text text("Sample Text", arial, 24);
-    
-    // position the top-left corner of the text so that the text aligns on the bottom
-    // text character size is in pixels, so move the text up  from the bottom by its height
-    text.setPosition(0, wHeight - (float)text.getCharacterSize());
-    
-    // main loop - continues for each frame while window is open
-    while (window.isOpen())
-    {
-        // event handling
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            // this event triggers when the window is closed
-            if (event.type == sf::Event::Closed)
-            {
-                window.close();
-            }
-            
-            // this event is triggered when a key is pressed
-            if (event.type == sf::Event::KeyPressed)
-            {
-                // print the key that was pressed to the console
-                std::cout << "Key pressed with code = " << event.key.code << "\n";
-                
-                // example, what happens when x is pressed
-                if (event.key.code == sf::Keyboard::X)
-                {
-                    // reverse the direction of the circle on the screen
-                    circleMoveSpeed *= -1.0f;
-                }
-            }
-        }
-        
-        // basic animation - move the each frame if it's still in frame
-        circle.setPosition(circle.getPosition().x - circleMoveSpeed, circle.getPosition().y - circleMoveSpeed);
-        
-        // basic rendering function calls
-        window.clear();         // clear the window of anything previously drawn
-        window.draw(circle);    // draw the circle
-        window.draw(text);      // draw the text
-        window.display();       // call the window display function
-    }
-    */
     
     return 0;
 }

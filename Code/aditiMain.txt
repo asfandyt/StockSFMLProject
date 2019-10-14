@@ -165,7 +165,7 @@ int main(int argc, char * argv[])
 
     // main loop - continues for each frame while window is open
     while (window.isOpen())
-    {
+    =   1
         // event handling
         sf::Event event;
         while (window.pollEvent(event))
