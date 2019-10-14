@@ -21,7 +21,7 @@ int main(int argc, char * argv[])
     std::vector<std::string> Words;
     
     
-   // Created vector containing shared_ptr to contain references to shapes
+    // Created vector containing shared_ptr to contain references to shapes
     // We will use '->' to add/change members
     std::vector<std::shared_ptr<sf::Shape>> shapes;
     
@@ -29,7 +29,13 @@ int main(int argc, char * argv[])
     std::vector<sf::Vector2f> velocity;
     
     // Track shape names
+    std::vector<std::string> names;
     
+    // Track Text pointers
+    std::vector<std::shared_ptr<sf::Text>> texts;
+    
+    // Default font
+    sf::Font font;
     
     // Window variables
     int wWidth = 0, wHeight = 0;
@@ -42,7 +48,12 @@ int main(int argc, char * argv[])
     std::string shapeName;
     
     // TODO: Font file path
-    std::string fontFilePath = "";
+    std::string fontFilePath = "arial.ttf";
+    
+    // Load font from path
+    if (!font.loadFromFile(fontFilePath)) {
+        std::cout << "Error: Font file not found" << std::endl;
+    }
     
     // Configuration file
     source.open("config.txt");
@@ -125,6 +136,9 @@ int main(int argc, char * argv[])
                 shapes.push_back(shape);
                 
                 velocity.push_back(sf::Vector2f(shapeVX, shapeVY));
+                
+                auto text = std::make_shared<sf::Text>(sf::Text(shapeName, font, 24));
+                texts.push_back(text);
             }
         
             else if (Words[j] == "Rectangle")
@@ -148,6 +162,9 @@ int main(int argc, char * argv[])
                 shapes.push_back(shape);
                 
                 velocity.push_back(sf::Vector2f(shapeVX, shapeVY));
+                
+                auto text = std::make_shared<sf::Text>(sf::Text(shapeName, font, 24));
+                texts.push_back(text);
             }
             
         }
@@ -205,10 +222,11 @@ int main(int argc, char * argv[])
         for (std::size_t i = 0; i < shapes.size(); i++) {
             
             float xLeftBB, yTopBB, shapeWidth, shapeHeight, radius;
-            float currentLocationX, currentLocationY;
+            float currentLocationX, currentLocationY, textX, textY;
             
             xLeftBB = shapes[i] -> getGlobalBounds().left;
             yTopBB = shapes[i] -> getGlobalBounds().top;
+            
             
             std::string circleShape = "CircleShape";
             std::string shapeName = typeid(*shapes[i]).name();
@@ -219,6 +237,10 @@ int main(int argc, char * argv[])
                 sf::CircleShape* c = dynamic_cast<sf::CircleShape*>(shapes[i].get());
                 radius = c -> getRadius();
                 
+                // Text
+                textX = shapes[i] -> getPosition().x  + radius - texts[i] -> getLocalBounds().width / 2;
+                textY = shapes[i] -> getPosition().y + radius - texts[i] -> getLocalBounds().height / 2;
+                
             }
             else
             {
@@ -226,6 +248,10 @@ int main(int argc, char * argv[])
                 // when moving right, compare right wall
                 shapeWidth = r -> getPoint(0).x;
                 shapeHeight = r -> getPoint(0).y;
+                
+                // Text
+                textX = shapes[i] -> getPosition().x + (shapes[i] -> getLocalBounds().width / 2) - texts[i] -> getLocalBounds().width / 2;
+                textY = shapes[i] -> getPosition().y + (shapes[i] -> getLocalBounds().height / 2) - texts[i] -> getLocalBounds().height / 2;
                 
             }
             
@@ -284,11 +310,13 @@ int main(int argc, char * argv[])
                 if(currentLocationY >= wHeight)
                     velocity[i].y *= -1.0f;
             }
-            // Move the objects
+            // Move the objects and text
             shapes[i] -> setPosition(shapes[i] -> getPosition().x - velocity[i].x, shapes[i] -> getPosition().y - velocity[i].y);
             
-            // draw object onto window object
+            texts[i] -> setPosition(textX, textY);
+            // draw object and text onto window object
             window.draw(*shapes[i]);
+            window.draw(*texts[i]);
             
         }
         
