@@ -137,7 +137,7 @@ int main(int argc, char * argv[])
                 
                 velocity.push_back(sf::Vector2f(shapeVX, shapeVY));
                 
-                auto text = std::make_shared<sf::Text>(sf::Text(shapeName, font, 24));
+                auto text = std::make_shared<sf::Text>(sf::Text(Words[j], font, 24));
                 texts.push_back(text);
             }
         
@@ -163,7 +163,7 @@ int main(int argc, char * argv[])
                 
                 velocity.push_back(sf::Vector2f(shapeVX, shapeVY));
                 
-                auto text = std::make_shared<sf::Text>(sf::Text(shapeName, font, 24));
+                auto text = std::make_shared<sf::Text>(sf::Text(Words[j], font, 24));
                 texts.push_back(text);
             }
             
