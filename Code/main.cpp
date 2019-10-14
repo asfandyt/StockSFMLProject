@@ -21,20 +21,14 @@ int main(int argc, char * argv[])
     std::vector<std::string> Words;
     
     
-    // TODO: Store different child shapes under base shape
-    // Add shapes to RectangleShape class
-    // RectangleShape class is a subclass of Shape class in SFML
-    std::vector<sf::RectangleShape> rectangles;
-    // CircleShape subclass of Shape class
-    std::vector<sf::CircleShape> circles;
-    
-    // Created vector containing shared_ptr to contain references to shapes
+   // Created vector containing shared_ptr to contain references to shapes
     // We will use '->' to add/change members
     std::vector<std::shared_ptr<sf::Shape>> shapes;
     
-    
-    // TODO:
+    // Store and track velocities
     std::vector<sf::Vector2f> velocity;
+    
+    // Track shape names
     
     
     // Window variables
@@ -170,9 +164,6 @@ int main(int argc, char * argv[])
     // RenderWindow is the class we use to render the window
     sf::RenderWindow window(sf::VideoMode(wWidth, wHeight), "SFML works!");
     
-    // Render the shapes
-    long numOfCircles = circles.size();
-    long numOfRectangles = rectangles.size();
     
     // Main loop
     while (window.isOpen())
