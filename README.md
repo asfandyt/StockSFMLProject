@@ -3,11 +3,11 @@
 Program Specification
 -------------------------------------------------------------------------------
 
-In this assignment you will be writing a C++/SFML program which will read
+In this project you will be writing a C++/SFML program which will read
 descriptions of shapes from a configuration file, and then drawing those shapes
 to the screen. Each shape will have a name, position, speed, color, as well as 
 properties unique to each shape type. For example, a Rectangle will have width 
-and height, and a circle will have a Radius. For this assignment, the position
+and height, and a circle will have a Radius. For this project, the position
 of a shape refers to its SFML default of the upper-left corner of the shape.
 
 You are also required to make these shapes "bounce" off the sides of the window 
@@ -18,7 +18,7 @@ the window. You can assume that all shapes will always be configured to start
 entirely within the window, and you don't have to worry about what happens if 
 they start outside the window. Each shape's name should be drawn on the exact 
 center of the shape in the given font size and color specified in the file.
-(note: this may be the trickiest part of the assignment, you will not lose many 
+(note: this may be the trickiest part of the project, you will not lose many 
 marks if it's not the exact center)
 
 A sample configuration file is given to you in config.txt, however marking will
@@ -27,7 +27,7 @@ sure to add and remove your own shapes to this file to test if they all work
 correctly. 
 
 Each line of the configuration file specifies one of the config settings of the 
-assignment program, with the first string in each line being the type of setting
+project program, with the first string in each line being the type of setting
 that the rest of the line specified. Lines in the config file can be one of the 
 following types !( and lines can appear in any order in the file.)
 
