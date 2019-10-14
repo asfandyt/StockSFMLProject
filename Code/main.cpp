@@ -269,7 +269,9 @@ int main(int argc, char * argv[])
                 }
                 else
                 {
-                    currentLocationX = xLeftBB + shapeWidth;
+                    // TODO: Width not correct
+                    // currentLocationX = xLeftBB + shapeWidth;
+                    currentLocationX = shapes[i] -> getPosition().x + shapes[i] -> getLocalBounds().width;
                     
                 }
                 
@@ -296,7 +298,8 @@ int main(int argc, char * argv[])
                 }
                 else
                 {
-                    currentLocationY = yTopBB + shapeHeight;
+                    //currentLocationY = yTopBB + shapeHeight;
+                    currentLocationY = shapes[i] -> getPosition().y + shapes[i] -> getLocalBounds().height;
                     
                 }
                 
