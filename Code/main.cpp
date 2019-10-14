@@ -1,19 +1,6 @@
-//
-//  main.cpp
-//  COMP4300_A1
-//
 //  Created by Asfand Tareen on 2019-09-16.
 //  Copyright © 2019 Asfand Tareen. All rights reserved.
 //
-/*
-#include <iostream>
-
-int main(int argc, const char * argv[]) {
-    // insert code here...
-    std::cout << "Hello, World!\n";
-    return 0;
-}
-*/
  
 
 #include <SFML/Graphics.hpp> // TODO: include <sfml-graphics.hpp>
@@ -314,73 +301,9 @@ int main(int argc, char * argv[])
             
         }
         
-        /*
-        for (std::size_t k = 0; k < numOfCircles; k++)
-        {
-            // TODO:: Find the left-top point of object: bounding box
-                
-            float xLeftBB, yTopBB;
-            float currentLocationX, currentLocationY;
-            
-            xLeftBB = circles[k].getGlobalBounds().left;
-            yTopBB = circles[k].getGlobalBounds().top;
-            
-            // For negative speed we will be checking intersection
-            // of the top and left walls
-            if(shapeVX > 0.0f)
-            {
-                // when moving left, compare left wall
-                currentLocationX = xLeftBB;
-                
-                if(currentLocationX <= 0.0f)
-                    shapeVX *= -1.0f;
-            }
-            else
-            {
-                // when moving right, compare right wall
-                currentLocationX = xLeftBB + 2 * (circles[k].getRadius());
-                
-                if(currentLocationX >= wWidth)
-                    shapeVX *= -1.0f;
-            }
-            
-            if(shapeVY > 0.0f)
-            {
-                // when moving up, compare upper wall
-                currentLocationY = yTopBB;
-                
-                if(currentLocationY <= 0.0f)
-                    shapeVY *= -1.0f;
-            }
-            else
-            {
-                // when moving down, compare lower wall
-                currentLocationY = yTopBB + 2 * (circles[k].getRadius());
-                
-                if(currentLocationY >= wHeight)
-                    shapeVY *= -1.0f;
-            }
-            
-            // Animate object
-            circles[k].setPosition(circles[k].getPosition().x - shapeVX, circles[k].getPosition().y - shapeVY);
-            
-            window.draw(circles[k]);
-        }
-        */
-        // call the window display function
+        
         window.display();
     }
-    
-    // Variables needed for the Window and Font is complete
-    
-    std::cout << "Window Width: " << wWidth << std::endl;
-    std::cout << "Window Height: " << wHeight << std::endl;
-    std::cout << "Font File: " << fontFilePath << std::endl;
-    std::cout << "Font Size: " << fontSize << std::endl;
-    std::cout << "Font Color Red: " << fontColorR << std::endl;
-    std::cout << "Font Color Green: " << fontColorG << std::endl;
-    std::cout << "Font Color Blue: " << fontColorB << std::endl;
-    
     
     
     return 0;
